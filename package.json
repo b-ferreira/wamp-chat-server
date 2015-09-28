@@ -1,0 +1,19 @@
+{
+  "name": "wamp-chat-server",
+  "version": "1.0.0",
+  "description": "A simple javascript chat application server built over Autobahn.js (WAMP WS Protocol) for learning purposes.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WAMP",
+    "Crossbar",
+    "Autobahn"
+  ],
+  "author": "Bruno Ferreira",
+  "license": "ISC",
+  "devDependencies": {
+    "autobahn": "^0.9.6"
+  }
+}
