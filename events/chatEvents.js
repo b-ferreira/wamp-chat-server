@@ -10,6 +10,6 @@ module.exports = {
 	// PubSub Events
 	newMessage: "com.chat.newmessage",
 	newParticipant: "com.chat.newparticipant",
-	participantLoggedOut: "com.chat.participantloggedout"
+	participantLoggedOut: "com.chat.participantloggedout",
 	participantTypping: "com.chat.participanttypping"
 };

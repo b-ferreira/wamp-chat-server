@@ -35,8 +35,8 @@ var _errorEvents = require('./events/errorEvents.js');
 
 // Creates a new WAMP realm on localhost.
 var connection = new autobahn.Connection({
-   url: 'ws://127.0.0.1:8080/ws',
-   realm: 'wamp-chat'
+   url: 'ws://127.0.0.1:9000/ws',
+   realm: 'realm1'
 });
 
 connection.onopen = function (session) {
@@ -61,9 +61,13 @@ connection.onopen = function (session) {
 	 * Remote Procedure Calls capabilities
 	 */
 	// REGISTER login procedure;
-	function performLogin(username) {
-		if (_partipants.login(username)) {
+	function performLogin(args) {
 
+		var username = args[0];
+
+		console.log("Login called...", username);
+
+		if (_partipants.login(username)) {
 			//Publish that a new user has logged in.
 			session.publish(_chatEvents.newParticipant, [username]);
 

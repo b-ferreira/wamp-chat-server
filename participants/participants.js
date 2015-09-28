@@ -1,6 +1,5 @@
 // Internal modules
-var _handlers = require("./participantsHandlers.js");
-var _chatEvents = require('./events/chatEvents.js');
+var _chatEvents = require('../events/chatEvents.js');
 
 // Local vars
 var participantsList = [];
@@ -10,6 +9,7 @@ var participantsList = [];
  * The current Autobahn's session need to be passed as parameter for this module.
  */
 module.exports = function(session) {
+	var module = {};
 
 	// Checks if the username already exists in user's list. 
 	// If it doesn't exists in the list, append the username to the list and notify user that login was successfully done.
@@ -44,6 +44,4 @@ module.exports = function(session) {
 	}
 
 	return module;
-}
-
-
+};
