@@ -36,7 +36,7 @@ module.exports = function(session) {
 
 	// Returns the participants' list.
 	module.getParticipants = function() {
-		return this.participantsList;
+		return participantsList;
 	}
 
 	module.onMessage = function() {
