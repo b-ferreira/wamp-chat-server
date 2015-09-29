@@ -17,14 +17,11 @@ module.exports = function(session) {
 	// Checks if the username already exists in user's list. 
 	// If it doesn't exists in the list, append the username to the list and notify user that login was successfully done.
 	// If it exists in the list, return an error on callback.
-	module.login = function(username, guid) {
+	module.login = function(participant) {
 		if (participantsList.filter(function(elm) {
-				return elm.username == username;
+				return elm.username == participant.username;
 			}).length == 0) {
-			participantsList.push({
-				username: username,
-				guid: guid
-			});
+			participantsList.push(participant);
 			return true;
 		} else return false;
 	}

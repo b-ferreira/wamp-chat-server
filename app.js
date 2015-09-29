@@ -35,7 +35,7 @@ var _errorEvents = require('./events/errorEvents.js');
 
 // Creates a new WAMP realm on localhost.
 var connection = new autobahn.Connection({
-   url: 'ws://127.0.0.1:9000/ws',
+   url: 'ws://10.10.58.41:9000/ws',
    realm: 'realm1'
 });
 
@@ -50,22 +50,21 @@ connection.onopen = function (session) {
 	// REGISTER login procedure;
 	function performLogin(args) {
 
-		var username = args[0];
-		var guid = args[1];
+		var participant = {
+			username: args[0],
+			guid: args[1]
+		}
+		
+		console.log("Login called...", participant.username);
 
-		console.log("Login called...", username);
-
-		if (_partipants.login(username, guid)) {
+		if (_partipants.login(participant)) {
 			//Publish that a new user has logged in.
-			session.publish(_chatEvents.newParticipant, [username]);
+			session.publish(_chatEvents.newParticipant, [participant]);
 
 			// Returns an instance of user which has logged in.
 			return {
 				status: "OK",
-				data: {
-					username: username,
-					guid: guid
-				}
+				data: participant
 			};
 		} else throw new autobahn.Error(_errorEvents.userAlreadyExists, [], {code:"001"});
 	}
