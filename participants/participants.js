@@ -1,7 +1,10 @@
 // Internal modules
 var _chatEvents = require('../events/chatEvents.js');
 
-// Local vars
+/*
+ * Local vars
+ */
+// Participants' list
 var participantsList = [];
 
 /*
@@ -14,22 +17,34 @@ module.exports = function(session) {
 	// Checks if the username already exists in user's list. 
 	// If it doesn't exists in the list, append the username to the list and notify user that login was successfully done.
 	// If it exists in the list, return an error on callback.
-	module.login = function(username) {
-		if (participantsList.indexOf(username) == -1) {
-			participantsList.push(username);
+	module.login = function(username, guid) {
+		if (participantsList.filter(function(elm) {
+				return elm.username == username;
+			}).length == 0) {
+			participantsList.push({
+				username: username,
+				guid: guid
+			});
 			return true;
 		} else return false;
 	}
 
 	// Removes the username from participant's List and just return a message for logout.
-	module.logout = function(username) {		
-		var userIdx = participantsList.indexOf(username);
-		if (userIdx > -1) {
-			participantsList.splice(userIdx, 1);			
-		}
+	module.logout = function(args) {
+		var username = args[0];
+		var userIdx = 0;
+		var participant = {};
+
+		for (userIdx; userIdx < participantsList.length; userIdx++) {
+			if (participantsList[userIdx].username == username) {
+				participant = participantsList[userIdx];
+				participantsList.splice(userIdx, 1);
+				break;
+			}
+		};
 
 		// publish that a user has logged out.
-		session.publish(_chatEvents.participantLoggedOut, [username]);
+		session.publish(_chatEvents.participantLoggedOut, [participant]);
 
 		return "Logged out!";
 	}
@@ -37,10 +52,6 @@ module.exports = function(session) {
 	// Returns the participants' list.
 	module.getParticipants = function() {
 		return participantsList;
-	}
-
-	module.onMessage = function() {
-		
 	}
 
 	return module;

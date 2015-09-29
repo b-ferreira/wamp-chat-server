@@ -45,35 +45,27 @@ connection.onopen = function (session) {
 	var _partipants = require('./participants/participants.js')(session);
 
 	/*
-	 * Publish Subscribe capabilities
-	 */
-	// SUBSCRIBE to message topic
-	session.subscribe(_chatEvents.newMessage, _partipants.onMessage).then(
-		function(sub) {
-			console.log("subscribed to topic 'newmessage'");
-		},
-		function() {
-			console.log("failed to subscribe on topic 'newmessage':" + err);
-		}
-	);
-
-	/*
 	 * Remote Procedure Calls capabilities
 	 */
 	// REGISTER login procedure;
 	function performLogin(args) {
 
 		var username = args[0];
+		var guid = args[1];
 
 		console.log("Login called...", username);
 
-		if (_partipants.login(username)) {
+		if (_partipants.login(username, guid)) {
 			//Publish that a new user has logged in.
 			session.publish(_chatEvents.newParticipant, [username]);
 
+			// Returns an instance of user which has logged in.
 			return {
 				status: "OK",
-				response: username + "has logged in."
+				data: {
+					username: username,
+					guid: guid
+				}
 			};
 		} else throw new autobahn.Error(_errorEvents.userAlreadyExists, [], {code:"001"});
 	}
@@ -96,7 +88,7 @@ connection.onopen = function (session) {
 		}
 	);
 
-	// REGISTER get participants list
+	// REGISTER get participants' list
 	session.register(_chatEvents.getParticipants, _partipants.getParticipants).then(
 		function (reg) {
 			console.log("procedure getparticipants() registered");
@@ -105,7 +97,6 @@ connection.onopen = function (session) {
 			console.log("failed to register procedure getparticipants(): " + err);
 		}
 	);
-	
 }
 
 connection.open();
