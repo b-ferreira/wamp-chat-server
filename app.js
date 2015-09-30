@@ -35,7 +35,7 @@ var _errorEvents = require('./events/errorEvents.js');
 
 // Creates a new WAMP realm on localhost.
 var connection = new autobahn.Connection({
-   url: 'ws://10.10.58.41:9000/ws',
+   url: 'ws://127.0.0.1:9000/ws',
    realm: 'realm1'
 });
 
